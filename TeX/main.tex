@@ -1,0 +1,23 @@
+\documentclass[14pt, a4paper, oneside]{extreport}
+\usepackage{gost}
+
+\begin{document}
+
+\input{title}            % Титульный лист (без номера, но считается)
+
+\setcounter{page}{2}
+\tableofcontents
+\clearpage
+
+\input{chapters/00-intro}
+\input{chapters/01-theory}
+\input{chapters/02-practice}
+\input{chapters/99-conclusion}
+
+\structchapter{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}
+\printbibliography[heading=none]
+
+\appendix
+\input{chapters/appendix-a}
+
+\end{document}

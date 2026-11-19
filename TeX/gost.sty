@@ -1,0 +1,110 @@
+% ===== Оформление по ГОСТ 7.32-2017 =====
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gost}
+
+% --- Язык и шрифты ---
+\RequirePackage{fontspec}
+\RequirePackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+% Times New Roman, если установлен; иначе Liberation Serif (те же размеры букв)
+\IfFontExistsTF{Times New Roman}
+  {\setmainfont{Times New Roman}}
+  {\setmainfont{Liberation Serif}}
+\IfFontExistsTF{Liberation Sans}{\setsansfont{Liberation Sans}}{}
+\IfFontExistsTF{Liberation Mono}{\setmonofont{Liberation Mono}}{}
+\RequirePackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+
+% --- Поля: слева 30, справа 15, сверху и снизу 20 мм ---
+\RequirePackage[a4paper, left=30mm, right=15mm, top=20mm, bottom=20mm,
+  footskip=10mm]{geometry}
+
+% --- Интервал и абзацный отступ ---
+\RequirePackage{setspace}
+\onehalfspacing
+\RequirePackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\sloppy
+
+% --- Номер страницы внизу по центру ---
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}}
+
+% --- Заголовки ---
+\RequirePackage{titlesec}
+% Глава: «1 Название», с абзацного отступа, жирный, с новой страницы
+\titleformat{\chapter}[block]{\normalsize\bfseries}
+  {\hspace{\parindent}\thechapter}{0.5em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{14pt}
+\titleformat{\section}[block]{\normalsize\bfseries}
+  {\hspace{\parindent}\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{14pt}{14pt}
+\titleformat{\subsection}[block]{\normalsize\bfseries}
+  {\hspace{\parindent}\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{14pt}{14pt}
+\setcounter{secnumdepth}{3}
+
+% Структурные элементы без номера: ВВЕДЕНИЕ, ЗАКЛЮЧЕНИЕ и т.п.
+% По центру, прописными, жирным, с новой страницы, попадают в содержание
+\newcommand{\structchapter}[1]{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}%
+  \begin{center}\bfseries #1\end{center}%
+  \vspace{14pt}%
+}
+
+% --- Содержание ---
+\RequirePackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\normalsize\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{14pt}
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand{\cftchappagefont}{\normalfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforechapskip}{0pt}
+\addto\captionsrussian{\renewcommand{\contentsname}{СОДЕРЖАНИЕ}}
+
+% --- Рисунки и таблицы: «Рисунок 1.1 – Название» ---
+\RequirePackage{graphicx}
+\graphicspath{{images/}}
+\RequirePackage{caption}
+\captionsetup{labelsep=endash, font=normalsize, justification=centering,
+  singlelinecheck=false}
+\captionsetup[figure]{name=Рисунок}
+\captionsetup[table]{name=Таблица, justification=raggedright,
+  singlelinecheck=false, position=top}
+\RequirePackage{float}
+\RequirePackage{booktabs, longtable, multirow, array}
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+
+% --- Списки: с абзацного отступа, маркер — тире ---
+\RequirePackage{enumitem}
+\setlist{nosep, leftmargin=*, labelindent=\parindent}
+\setlist[itemize]{label=--}
+\setlist[enumerate]{label=\arabic*)}
+
+% --- Код ---
+\RequirePackage{listings}
+\lstset{basicstyle=\ttfamily\small, breaklines=true, frame=single,
+  numbers=left, numberstyle=\tiny, columns=fullflexible,
+  extendedchars=true, keepspaces=true, showstringspaces=false}
+
+% --- Список литературы по ГОСТ Р 7.0.5-2008 ---
+\RequirePackage[backend=biber, style=gost-numeric, sorting=none,
+  language=auto, autolang=other]{biblatex}
+\addbibresource{bibliography.bib}
+
+% --- Ссылки (кликабельные, но без цветных рамок) ---
+\RequirePackage[hidelinks]{hyperref}
+
+\endinput
